@@ -59,7 +59,7 @@ while len(urlq):
     # Find all links without leaving the site
     # Create another for off-site links
     inlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if urljoin(response.url, url).startswith(START)}
-    exlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if not urljoin(response.url, url).startswith(START)}
+    #exlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if not urljoin(response.url, url).startswith(START)}
     
     # These are the gathered links.
     print("THESE INTERNAL LINKS WERE FOUND")
@@ -67,18 +67,18 @@ while len(urlq):
         print()
         print(link)
     
-    print("THESE EXTERNAL LINKS WERE FOUND")
+    '''print("THESE EXTERNAL LINKS WERE FOUND")
     for links in exlinks:
         print()
-        print(links)
+        print(links)'''
     
     # Add new URLs to list while removing any already found.
     for link in (inlinks - found):
         found.add(link)
         urlq.append(link)
-    for link in (exlinks - found):
+    '''for link in (exlinks - found):
         found.add(link)
-        urlq.append(link)
+        urlq.append(link)'''
 
 print("The following are all found links:")
 for link in found:
