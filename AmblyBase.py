@@ -54,6 +54,7 @@ def reviewOp():
     print()
     print("1 Internal Urls")
     print("2 External URLs")
+    print("3 Back to Main Menu")
     print()
     choice = int(input("Input the numeric value for your choice: "))
     
@@ -61,6 +62,8 @@ def reviewOp():
         reviewIn()
     elif(choice == 2):
         reviewEx()
+    elif(choice == 3):
+        main()
     else:
         print("ERROR: Invalid Input")
         reviewOp()
@@ -141,7 +144,7 @@ def content(result):
         
     main()
 
-def storeIn():
+def storeIn(inLinks):
     print("The following are links found related to the starter URL: \n")
     for link in infound:
         print()
@@ -152,7 +155,7 @@ def storeIn():
     main()
         
 
-def storeEx():
+def storeEx(exLinks):
     print("The following are all found links:")
     for link in exfound:
         print()
@@ -162,19 +165,27 @@ def storeEx():
     
     main()
 
+def closeOut():
+    inLinks.close()
+    exLinks.close()
+    wpData.close()
+    sys.exit("All Files Closed.  Terminating Program")
+
 def main():
     print("Ambly Menu:")
     print("1 Review Next Link")
     print("2 Store and Print Web-page Content")
     print("3 Store and Print Internal URLs found")
     print("4 Store and Print External URLs found")
+    print("5 Quit")
     print()
     choice = int(input("Input your choice of the above options: "))
     
     if (choice == 1): reviewOp()
     elif(choice == 2): content()
-    elif(choice == 3): storeIn()
-    elif(choice == 4): storeEx()
+    elif(choice == 3): storeIn(inLinks)
+    elif(choice == 4): storeEx(exLinks)
+    elif(choice == 5): closeOut()
     else:
         print("ERROR: Invalid Input")
         main()
