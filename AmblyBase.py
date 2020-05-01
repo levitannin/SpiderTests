@@ -19,11 +19,15 @@ In cases where a new IP may be necessary, run the following command:
 """
 
 import requests #   handle HTTP/HTTPS connections
+import sys
 from lxml import html, etree #  Parse HTML
-from urllib.parse import urlparse
 from urllib.parse import urljoin
-import collections #    work with queues
-import sys #    work with argv
+import collections #    work with queuesi
+from bs4 import BeautifulSoup
+
+inLinks = open('internal_links.txt', 'w')
+exLinks = open('external_links.txt', 'w')
+wpData = open('scraped_pages.txt', 'w+')
 
 try:
     # Suppress the warnings for SSL connections
@@ -37,15 +41,33 @@ START = sys.argv[1]
 
 # Stores all the URLs found
 # Add this value to the START value to avoid multiple instances of the same URL
-urlq = collections.deque()
-urlq.append(START)
+inurlq = collections.deque()
+inurlq.append(START)
+exurlq = collections.deque()
 
-found = set()
-found.add(START)
+infound = set()
+infound.add(START)
+exfound = set()
 
-while len(urlq):
+def reviewOp():
+    print("Choose one of the Following Review Choices:")
+    print()
+    print("1 Internal Urls")
+    print("2 External URLs")
+    print()
+    choice = int(input("Input the numeric value for your choice: "))
+    
+    if(choice == 1):
+        reviewIn()
+    elif(choice == 2):
+        reviewEx()
+    else:
+        print("ERROR: Invalid Input")
+        reviewOp()
+
+def reviewIn():
     # grab left-most item from the queue
-    url = urlq.popleft()
+    url = inurlq.popleft()
     
     # Use the pulled item to request the (tor)webpage.
     response = requests.get(url)
@@ -54,33 +76,108 @@ while len(urlq):
     
     # Formats into human-readable text then prints.
     result = etree.tostring(body, pretty_print = True, method = "html")
-    print(result)
+    soup = BeautifulSoup(result)
+    for script in soup(["script", "style"]):
+        script.decompose()
+    linesText = list(soup.stripped_strings)
+    print(linesText)
+    #content(result)
     
     # Find all links without leaving the site
     # Create another for off-site links
     inlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if urljoin(response.url, url).startswith(START)}
-    #exlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if not urljoin(response.url, url).startswith(START)}
-    
-    # These are the gathered links.
-    print("THESE INTERNAL LINKS WERE FOUND")
-    for link in inlinks:
-        print()
-        print(link)
-    
-    '''print("THESE EXTERNAL LINKS WERE FOUND")
-    for links in exlinks:
-        print()
-        print(links)'''
+    exlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if not urljoin(response.url, url).startswith(START)}
     
     # Add new URLs to list while removing any already found.
-    for link in (inlinks - found):
-        found.add(link)
-        urlq.append(link)
-    '''for link in (exlinks - found):
-        found.add(link)
-        urlq.append(link)'''
+    for link in (inlinks - infound):
+        infound.add(link)
+        inurlq.append(link)
+    for link in (exlinks - exfound):
+        exfound.add(link)
+        exurlq.append(link)
+    main()
 
-print("The following are all found links:")
-for link in found:
+def reviewEx():
+    # grab left-most item from the queue
+    url = exurlq.popleft()
+    
+    # Use the pulled item to request the (tor)webpage.
+    response = requests.get(url)
+    # Gather the contents of the page.
+    body = html.fromstring(response.content)
+    
+    # Formats into human-readable text then prints.
+    result = etree.tostring(body, pretty_print = True, method = "html")
+    content(result)
+    
+    # Find all links without leaving the site
+    # Create another for off-site links
+    inlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if urljoin(response.url, url).startswith(START)}
+    exlinks = {urljoin(response.url, url) for url in body.xpath('//a/@href') if not urljoin(response.url, url).startswith(START)}
+    
+    # Add new URLs to list while removing any already found.
+    for link in (inlinks - infound):
+        infound.add(link)
+        inurlq.append(link)
+    for link in (exlinks - exfound):
+        exfound.add(link)
+        exurlq.append(link)
+    main()
+
+def content(result):
+    '''pullText = result.join(html.select("//body//text()").extract()).strip()
+    wpData.write(pullText)
+    print(pullText)
+    '''
+    soup = BeautifulSoup(result)
+    for script in soup(["script", "style"]):
+        script.decompose()
+    linesText = list(soup.stripped_strings)
+    
+    print(linesText)
+    
+    for line in linesText:
+        wpData.write(line)
+        
+    main()
+
+def storeIn():
+    print("The following are links found related to the starter URL: \n")
+    for link in infound:
+        print()
+        print(link)
+        inLinks.write(link)
+        inLinks.write('\n')
+    
+    main()
+        
+
+def storeEx():
+    print("The following are all found links:")
+    for link in exfound:
+        print()
+        print(link)
+        exLinks.write(link)
+        exLinks.write('\n')
+    
+    main()
+
+def main():
+    print("Ambly Menu:")
+    print("1 Review Next Link")
+    print("2 Store and Print Web-page Content")
+    print("3 Store and Print Internal URLs found")
+    print("4 Store and Print External URLs found")
     print()
-    print(link)
+    choice = int(input("Input your choice of the above options: "))
+    
+    if (choice == 1): reviewOp()
+    elif(choice == 2): content()
+    elif(choice == 3): storeIn()
+    elif(choice == 4): storeEx()
+    else:
+        print("ERROR: Invalid Input")
+        main()
+
+if __name__ == '__main__':    
+    main()
