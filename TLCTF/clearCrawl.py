@@ -5,6 +5,17 @@ Created on Sun Jul  5 01:56:54 2020
 
 @author: levitannin
 
+To properly use this prototype ensure that tor is installed in the linux
+commandline.  To do this follow the steps below:
+    sudo apt install tor
+    sudo vi /etc/tor/torrc  # Use preferred text editor/viewer
+    Uncomment following lines:
+        ControlPort 9051
+        CookieAuthentication 1  # Set to 0
+    sudo /etc/init.d/tor restart
+    curl ifconfig.me    # Set up to check ip address
+    torify curl ifconfig.me 2>/dev/null     # check ip address -- verify tor connection
+
 This is a bare-bones clear-near crawler.  With time, the crawler will
 have machine learning modules added to it in order to better identify data online.
 This can be run in tandem with TorCrawl.py
