@@ -134,6 +134,7 @@ def spyderBody_clear():
                 finish = time.time()
                 killswitch = round(finish - start, 2)
                 if killswitch >= 3200.00:
+                    return identified
                     break
                 count = count + 1
                 continue
@@ -141,6 +142,7 @@ def spyderBody_clear():
         finish = time.time()
         killswitch = round(finish - start, 2)
         if killswitch >= 3200.00:
+            return identified
             break
 
 if __name__ == '__main__':
