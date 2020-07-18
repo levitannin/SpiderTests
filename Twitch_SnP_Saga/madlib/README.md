@@ -19,4 +19,5 @@ pull out the parts of speech needed for the madlib!
 As of:          Update:
 
 18/7/20         Created the base spider which can go to a URL given by user input and scrape the text.
+
 25/7/20         UPCOMING UPDATE -- Focus on Parts of Speech!
