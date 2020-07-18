@@ -4,36 +4,6 @@
 Created on Sun Jul  5 01:56:54 2020
 
 @author: levi
-
-URL Seeds:
-    Doris Hingel
-        http://msydqstlz2kzerdg.onion/search/?q=Doris+Hingel
-    
-    David Mawut Abuoi -- Need more info; username; email
-    
-    Daniel Navarro
-        http://msydqstlz2kzerdg.onion/search/?q=Daniel+Navarro
-        http://xmh57jrzrnw6insl.onion/4a1f6b371c/search.cgi?s=DRP&q=Daniel+Navarro&cmd=Search%21
-        http://hss3uro2hsxfogfq.onion/index.php?q=Daniel+Navarro&session=ftZ2BC520VQfaPJCG%2Fi1whTpgB3OIgsOnfiCfg8bEok%3D&numRows=20&hostLimit=20&template=0
-    
-    Lindsey Galvan
-        http://msydqstlz2kzerdg.onion/search/?q=Lindsey+Galvan
-        http://xmh57jrzrnw6insl.onion/4a1f6b371c/search.cgi?s=DRP&q=Lindsey+Galvan&cmd=Search%21
-        http://hss3uro2hsxfogfq.onion/index.php?q=Lindsey+Galvan&session=1WAk2vW5jCswR3jjVwbDQAsbDPR4WfXAFGDniBme75Q%3D&numRows=20&hostLimit=20&template=0
-    
-    Tymayrra Ayala
-        http://msydqstlz2kzerdg.onion/search/?q=Tymayrra+Ayala
-    
-    Tabitha Tennyson
-        http://msydqstlz2kzerdg.onion/search/?q=Tabitha+Tennyson
-        http://hss3uro2hsxfogfq.onion/index.php?q=Tabitha+Tennyson&session=XlY6T2fYQ%2BUL63VDQZqdd3U9oL1fRax79Cza%2Bc3CPSs%3D&numRows=20&hostLimit=20&template=0
-    
-    Alejandra Nava
-        http://msydqstlz2kzerdg.onion/search/?q=Alejandra+Nava
-        http://hss3uro2hsxfogfq.onion/index.php?q=Alejandra+Nava&session=4buHh3PPuyMeipmd7Ij8W%2B5VDYaxyTrJOZwBMrQPSGw%3D&numRows=20&hostLimit=20&template=0
-    
-    Mercedes Toliver
-        http://msydqstlz2kzerdg.onion/search/?q=Mercedes+Toliver
 """
 import requests
 import json
